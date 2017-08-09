@@ -218,6 +218,9 @@ class Fish(Animal):
   
   def swim(self):
     pass
+
+  def talk(self):
+    return 'gloo gloo!'
   
   def __str__(self):
     return "I am a fish!"
