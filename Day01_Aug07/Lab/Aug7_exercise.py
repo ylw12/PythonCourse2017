@@ -27,43 +27,82 @@ def test_has_no_e(x):
 # Practice 2
 """convert positive integer to base 2"""
 def binarify(num):
-    if num <= 0: return "0" 
-    s = ''
-    while num:
-        if num % 2 == 1:
-            s = "1" + s
-        else:
-            s = "0" + s
-        num /= 2
-    return s
+    if num > 0:
+        s = ''
+        while num:
+            if num % 2 == 1:
+                s = "1" + s
+            else:
+                s = "0" + s
+            num /= 2
+        return s
+    else:
+        return "0"
 
-# Why this does not work?
-def binarify(num):
-	digits = [str(num%2)]
-	while num > 0: 
-	    num /= 2
-	    digits.append(str(num%2))
-	return ''.join(digits[::-1])
+# def binarify(num):
+#	digits = [str(num%2)]
+#	while num>1: 
+#	    num /= 2
+#	    digits.append(str(num%2))
+#	return ''.join(digits[::-1])
 
 """convert positive integer to a string in any base"""
 def int_to_base(num, base):
-    if num <= 0: return "0"
-    s = ''
-    while num:
-        if num % base == 1:
-            s = "1" + s
-        else:
-            s = "0" + s
-        num /= base
-    return s
+    if num >= 0:
+        s = ''
+        while num:
+            if num % base > 0:
+                s = "1" + s
+            else:
+                s = "0" + s
+            num /= base
+        s = ''.join(s, num % base)
+        return s
+    else:
+        num = -num
+        s = ''
+        while num:
+            if num % base == 1:
+                s = "1" + s
+            else:
+                s = "0" + s
+            s = s + num % base
+            num /= base
+        return '-%s' %s
+
+# Erin
+def int_to_base(num, base):
+    if num <= 0 or base <= 0:
+        return '0'
+    if base == 1:
+        return num
+        neg = False
+    if num < 0:
+        num *= -1
+        neg = True
+    digits = []
+    while num > 0:
+        digits.append(num % base)
+        num = num / base
+        digits = digits[::-1]
+    if neg:
+        return '-'+''.join(str(i) for i in digits)
+    return ''.join(str(i) for i in digits)
 
 """take a string-formatted number and its base and return the base-10 integer"""
 def base_to_int(string, base):
-    if string=="0" or base <= 0 : return 0 
-    result = 0
-    for i in range(1, len(string)+1):
-    	result += int(string[-i]) * base ** (i-1)
-    return result
+    if string=="0" or base == 0 : return 0 
+    elif int(string) > 0:
+        result = 0
+        for i in range(1, len(string)+1):
+            result += int(string[-i]) * base ** (i-1)
+        return result
+    else: 
+        result = 0
+        for i in range(1, len(string)):
+            result += int(string[-i]) * base ** (i-1)
+        return -result
+
 
 """add two numbers of different bases and return the sum"""
 def flexibase_add(str1, str2, base1, base2):
