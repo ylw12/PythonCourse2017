@@ -1,4 +1,4 @@
-# Practice 1
+ # Practice 1
 def has_no_e(word):
 	"""return true or false if there is no e in 'word"""
 
@@ -39,55 +39,50 @@ def binarify(num):
     else:
         return "0"
 
-# def binarify(num):
-#	digits = [str(num%2)]
-#	while num>1: 
-#	    num /= 2
-#	    digits.append(str(num%2))
-#	return ''.join(digits[::-1])
+def binarify(num):
+	digits = [str(num%2)]
+	while num>1: 
+	    num /= 2
+	    digits.append(str(num%2))
+	return ''.join(digits[::-1])
 
 """convert positive integer to a string in any base"""
 def int_to_base(num, base):
-    if num >= 0:
-        s = ''
+    if base <= 0: return "0"
+    if base == 1: return num
+    if num == 0: return 0
+    elif num > 0:
+        s = []
         while num:
-            if num % base > 0:
-                s = "1" + s
-            else:
-                s = "0" + s
+            s.append(str(num % base))
             num /= base
-        s = ''.join(s, num % base)
-        return s
+        return ''.join(s[::-1])
     else:
         num = -num
-        s = ''
+        s = []
         while num:
-            if num % base == 1:
-                s = "1" + s
-            else:
-                s = "0" + s
-            s = s + num % base
+            s.append(str(num % base))
             num /= base
-        return '-%s' %s
+        return '-%s' %''.join(s[::-1])
 
 # Erin
-def int_to_base(num, base):
-    if num <= 0 or base <= 0:
-        return '0'
-    if base == 1:
-        return num
-        neg = False
-    if num < 0:
-        num *= -1
-        neg = True
-    digits = []
-    while num > 0:
-        digits.append(num % base)
-        num = num / base
-        digits = digits[::-1]
-    if neg:
-        return '-'+''.join(str(i) for i in digits)
-    return ''.join(str(i) for i in digits)
+# def int_to_base(num, base):
+#     if num <= 0 or base <= 0:
+#         return '0'
+#     if base == 1:
+#         return num
+#         neg = False
+#     if num < 0:
+#         num *= -1
+#         neg = True
+#     digits = []
+#     while num > 0:
+#         digits.append(num % base)
+#         num = num / base
+#         digits = digits[::-1]
+#     if neg:
+#         return '-'+''.join(str(i) for i in digits)
+#     return ''.join(str(i) for i in digits)
 
 """take a string-formatted number and its base and return the base-10 integer"""
 def base_to_int(string, base):
@@ -126,10 +121,6 @@ def romanify(num):
                 roman += r
                 num -= i
     return roman
-
-# test 
-romanify(2242)
-'MMCCXLII'
 
 
 
