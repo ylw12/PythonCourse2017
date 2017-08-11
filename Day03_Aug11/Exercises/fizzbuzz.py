@@ -14,6 +14,6 @@ def FizzBuzz(i):
     if i % 15 == 0:
       return "FizzBuzz"
   else:
-  	return str(i)
+   	return str(i)
   finally:
     print "finally"
