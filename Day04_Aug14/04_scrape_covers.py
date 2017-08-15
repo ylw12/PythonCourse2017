@@ -85,9 +85,9 @@ print(check4.keys())
 print([check4[i][0] for i in check4.keys()])
 
 data_file = '/Volumes/MyPassport/Covers/scrape_covers/covers_info_charlotte.csv'
-#with open(data_file, 'ab') as f:
- #   my_writer = csv.DictWriter(f, fieldnames=("id", "public", "place","date", "files"))
-    #my_writer.writeheader()
+with open(data_file, 'ab') as f:
+    my_writer = csv.DictWriter(f, fieldnames=("id", "public", "place","date", "files"))
+    my_writer.writeheader()
     #for i in range(len(check1.values()[0])):
     #    temp = [item[i] for item in check1.values()]
     #    temp_id = 'F1_'+str(temp[2])

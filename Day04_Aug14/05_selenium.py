@@ -1,17 +1,18 @@
+#brew install chromedriver
 # Import the Selenium 2 namespace (aka "webdriver")
 from selenium import webdriver
 
 # iPhone
-driver = webdriver.Remote(browser_name="iphone", command_executor='http://172.24.101.36:3001/hub')
+#driver = webdriver.Remote(browser_name="iphone", command_executor='http://172.24.101.36:3001/hub')
 
 # Android
-driver = webdriver.Remote(browser_name="android", command_executor='http://127.0.0.1:8080/hub')
+#driver = webdriver.Remote(browser_name="android", command_executor='http://127.0.0.1:8080/hub')
 
 # Google Chrome 
 driver = webdriver.Chrome()
 
 # Firefox 
-driver = webdriver.Firefox()
+#driver = webdriver.Firefox()
 
 # ------------------------------
 # The actual test scenario: Test the codepad.org code execution service.

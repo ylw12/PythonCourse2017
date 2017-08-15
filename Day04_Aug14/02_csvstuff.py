@@ -11,7 +11,7 @@ f.flush()
 f.close()
 
 #The correct way!
-with open('test1.csv', 'wb') as f:
+with open('test1.csv', 'wb') as f: # or 'w+''
   my_writer = csv.writer(f)
   for i in range(1, 100):
     my_writer.writerow([i, i-1])
@@ -29,8 +29,11 @@ with open('test_with_fields.csv', 'wb') as f:
 with open('test.csv', 'rb') as f:
   print "Reading test1.csv"
   my_reader = csv.reader(f)
+  mydat = []
   for row in my_reader:
     print row
+    mydat.append(row)
+print mydat
 
 #Now lets read some things with field names
 with open('test_with_fields.csv', 'rb') as f:
