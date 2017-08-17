@@ -40,31 +40,17 @@ embassies = [[38.917228,-77.0522365],
 
 # TODO: write code to answer the following questions: 
 # which embassy is closest to the White House in meters? how far? 
-embassy_A = gmaps.reverse_geocode(embassies[0])[0]['formatted_address']
-embassy_B = gmaps.reverse_geocode(embassies[1])[0]['formatted_address']
-embassy_C = gmaps.reverse_geocode(embassies[2])[0]['formatted_address']
+destinations = []
+directions = []
 now = datetime.now()
-#A
-directionA = gmaps.directions(embassy_A,
-                              whitehouse,
-                              mode="transit",
-                              departure_time=now)
-print directionA[0]['legs'][0]['distance']
-#B
-directionB = gmaps.directions(embassy_B,
-                              whitehouse,
-                              mode="transit",
-                              departure_time=now)
-print directionB[0]['legs'][0]['distance']
-#C
-directionC = gmaps.directions(embassy_C,
-                              whitehouse,
-                              mode="transit",
-                              departure_time=now)
-print directionC[0]['legs'][0]['distance']
-# Answer: Embassy B is the closest. It is 0.8/1.6*1000 meters.
+for i in range(0, len(embassies)):
+	destinations.append(gmaps.reverse_geocode(embassies[i])[0]['formatted_address'])
+	directions.append(gmaps.directions(embassies[i], whitehouse, mode="transit", departure_time=now))
+	print directions[i][0]['legs'][0]['distance']
+# Answer: The second embassy is the closest. It is 0.8/1.6*1000 meters.
 
-# what is its address? 
+# what is its address?
+embassy_B = destinations[1]
 embassy_B # '1601 Massachusetts Ave NW, Washington, DC 20036, USA'
 
 # if I wanted to hold a morning meeting there, which cafe would you suggest?
