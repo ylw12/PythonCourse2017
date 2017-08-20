@@ -1,11 +1,6 @@
-#Register an app: https://dev.twitter.com/
-
-#sudo pip install tweepy
 import tweepy
 import time
 
-#Check the documentation page
-#http://docs.tweepy.org/en/v3.2.0/
 #Get access to API
 auth = tweepy.OAuthHandler('j5oIH3LirGPur9nBpZQes9ngR', '5VnauVyjGF9UmivmbXtX1oZs7sKgrJXrGfb5XY6lZrP2iPGVXJ')
 auth.set_access_token('897839762798784512-3FfgASJ573uTPWCkH1M3pWRAYYoBc57', 'tIAhxJxIHF3vbYpJ17rNwIvgkNyDUPDrXeAx4ScCftk8l')    
@@ -13,11 +8,6 @@ api = tweepy.API(auth, wait_on_rate_limit = True, wait_on_rate_limit_notify = Tr
 
 #See rate limit
 api.rate_limit_status()
-
-#Create user objects
-target = api.get_user('PatrickRickert')
-target.followers_count # Our target has 115 followers.
-target.followers_ids() #creates a list of follower ids
 
 # From now on, we define the most active user as a user
 	#with the greatest number of total tweets.
@@ -114,81 +104,53 @@ FriendInfo("PatrickRickert")
 # -------- Two degrees of separation: -------- 
 # (For the following two questions, limit your search of 
 	# followers and friends to laymen and experts.)
+# -------- Define a function to extract all the followers' and their followers' information.
+def FollowerFollowerInfo(TargetName):
+	target = api.get_user(TargetName)
+	target_followers = api.followers(target.id, count = 200)
+	flw_names = []
+	flw_tweets = []
+	All_followers = []
+	try:
+		# Extract all the followers' information
+		for i in range(0, len(target_followers)):
+			if target_followers[i].followers_count > 1000:
+				pass
+			else:
+				flw_names.append(target_followers[i].screen_name)
+				flw_tweets.append(target_followers[i].statuses_count)
+		# Put the followers' and their followers' information into a dictionary
+		for j in range(0, len(flw_names)):
+			# Add the target's followers
+			All_followers.append({"Name": flw_names[j], "Total Tweets": flw_tweets[j]})
+			try:
+				# Add the target's follower's followers
+				new_target = api.get_user(flw_names[j])
+				new_target_followers = api.followers(new_target.id, count = 200)
+				new_flw_names = []
+				new_flw_tweets = []
+				# Extract the follower's followers' information
+				for k in range(0, len(new_target_followers)):
+					if new_target_followers[k].followers_count > 1000:
+						pass
+					else:
+						new_flw_names.append(new_target_followers[k].screen_name)
+						new_flw_tweets.append(new_target_followers[k].statuses_count)
+				# Add these information to the "All_followers" dictionary
+				for k in range(0, len(new_flw_names)):
+					All_followers.append({"Name": new_flw_names[k], "Total Tweets": new_flw_tweets[k]})	
+			except tweepy.TweepError as e:
+				print e
+				time.sleep(65)
+	except tweepy.TweepError as f:
+		print f
+		time.sleep(65)
+		# Find the most active person
+		act = All_followers[max(xrange(len(All_followers)), 
+			key=lambda index: All_followers[index]["Total Tweets"])]
+		print "The most active person is: %s \nHer or his total tweet number is: %s." %(act["Name"], act["Total Tweets"])
+
 
 # Q: Among the followers of your target and their followers, who is the most active?
 # Q: Among the friends of your target and their friends, who is the most active?
-
-
-flw_names = []
-for follower in tweepy.Cursor(target_followers, count = 200, include_entities = True).items():
-	flw_names.append(follower.screen_name)
-
-
-for friend in tweepy.Cursor(api.friends).items():
-    # Process the friend here
-    process_friend(friend)
-
-#What can I do using this object?
-dir(target)
-
-#Get some of her information
-batman.id
-batman.name
-batman.screen_name
-batman.location
-
-#Check her tweets
-batman.status
-batman.status.text
-batman.statuses_count
-
-#Check her followers
-target.followers_count
-target.followers() #creates a list of user objects - only the first 20!
-api.followers(target.id,count=1) #creates a list of user objects - can get up to 200
-
-
-api.followers_ids('BigDataBatman')
-
-
-for follower_id in mich.followers_ids():
-	user = api.get_user(follower_id)
-	print user.screen_name
-
-
-bstatuses = api.user_timeline('BigDataBatman',page=1)
-[x.text for x in bstatuses]
-
-
-#How to deal with limits
-
-# Extract tweets
-mytweets = []
-for status in tweepy.Cursor(api.user_timeline, id='michtorresp').items():
-    # process status here
-    mytweets.append(status.text)
-
-
-
-#Get the first 2 "pages" of follower ids
-krugmans_followers=[]
-
-# extend:
-# try x=[1,2]
-# x.append([3,4])
-# x.extend([3,4])
-
-for page in tweepy.Cursor(api.followers_ids, 'NYTimeskrugman').pages(2):
-    krugmans_followers.extend(page)
-    time.sleep(60)
-    
-#Get the ids of 6000 followers
-krugmans_followers=[]
-
-for item in tweepy.Cursor(api.followers_ids, 'NYTimeskrugman').items(10):
-	print item
-	krugmans_followers.append(item)
-	time.sleep(1)
-	
-
 
