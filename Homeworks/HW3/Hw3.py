@@ -7,8 +7,6 @@ import time
 #Check the documentation page
 #http://docs.tweepy.org/en/v3.2.0/
 #Get access to API
-    
-api = tweepy.API(auth, wait_on_rate_limit = True, wait_on_rate_limit_notify = True)
 
 
 #See rate limit
@@ -23,24 +21,39 @@ target.followers_ids() #creates a list of follower ids
 	#with the greatest number of total tweets.
 
 # -------- One degree of separation: --------
+# -------- Define a function to extract all the followers' information.
+def FollowerInfo(TargetName):
+	target = api.get_user(TargetName)
+	target_followers = api.followers(target.id, count=200)
+	flw_names = []
+	flw_tweets = []
+	flw_flws = []
+	All_followers = []
+	# Extract all the followers' information
+	for i in range(0, len(target_followers)):
+		flw_names.append(target_followers[i].screen_name)
+		flw_tweets.append(target_followers[i].statuses_count)
+		flw_flws.append(target_followers[i].followers_count)
+	# Put everthing together in the dictionaries
+	for i in range(0, len(target_followers)):
+		All_followers.append({"Name": flw_names[i], 
+			"Total Tweets": flw_tweets[i], "Total Followers": flw_flws[i]})
+	act = All_followers[max(xrange(len(All_followers)), 
+		key=lambda index: All_followers[index]["Total Tweets"])]
+	pop = All_followers[max(xrange(len(All_followers)), 
+		key=lambda index: All_followers[index]["Total Followers"])]
+	print "The most active follower is: %s \nHer or his total tweet number is: %s." %(act["Name"], act["Total Tweets"])
+	print "The most popular follower is: %s \nHer or his total follower number is: %s" %(pop["Name"], pop["Total Followers"])
 
-
+# -------- Use the function to answer the question.
 # Q: Among the followers of your target who is the most active?
 # Q: Among the followers of your target who is the most popular, 
 	#i.e. has the greatest number of followers?
-target_followers = api.followers(target.id, count=200)
-flw_names = []
-flw_tweets = []
-flw_flws = []
-All_followers = []
-for i in range(0, len(target_followers)):
-	flw_names.append(target_followers[i].screen_name)
-	flw_tweets.append(target_followers[i].statuses_count)
-	flw_flws.append(target_followers[i].followers_count)
-# Put everthing together in the dictionaries
-for i in range(0, len(petitions)):
-	All_petitions.append({"Title": Titles[i], "Published date": Dates[i], "Issue": Issues[i], "Number of signatures": Signatures[i]})
-
+FollowerInfo("PatrickRickert")
+# A:The most active follower is: simonwillo 
+# 	Her or his total tweet number is: 54273.
+# A:The most popular follower is: benlandis 
+#	Her or his total follower number is: 3237135
 
 flw_names = []
 for follower in tweepy.Cursor(target_followers, count = 200, include_entities = True).items():
