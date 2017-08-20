@@ -7,7 +7,9 @@ import time
 #Check the documentation page
 #http://docs.tweepy.org/en/v3.2.0/
 #Get access to API
-
+auth = tweepy.OAuthHandler('j5oIH3LirGPur9nBpZQes9ngR', '5VnauVyjGF9UmivmbXtX1oZs7sKgrJXrGfb5XY6lZrP2iPGVXJ')
+auth.set_access_token('897839762798784512-3FfgASJ573uTPWCkH1M3pWRAYYoBc57', 'tIAhxJxIHF3vbYpJ17rNwIvgkNyDUPDrXeAx4ScCftk8l')    
+api = tweepy.API(auth, wait_on_rate_limit = True, wait_on_rate_limit_notify = True)
 
 #See rate limit
 api.rate_limit_status()
@@ -55,28 +57,59 @@ FollowerInfo("PatrickRickert")
 # A:The most popular follower is: benlandis 
 #	Her or his total follower number is: 3237135
 
-flw_names = []
-for follower in tweepy.Cursor(target_followers, count = 200, include_entities = True).items():
-	flw_names.append(follower.screen_name)
+# -------- Define a function to extract all the followers' information.
+def FriendInfo(TargetName):
+	target = api.get_user(TargetName)
+	target_friends = api.friends(target.id, count=200)
+	fnd_names = []
+	fnd_tweets = []
+	fnd_flws = []
+	All_friends = []
+	layman = []
+	expert = []
+	celebrity = []
+	for i in range(0, len(target_friends)):
+		fnd_names.append(target_friends[i].screen_name)
+		fnd_tweets.append(target_friends[i].statuses_count)
+		fnd_flws.append(target_friends[i].followers_count)
+	# Put everthing together in the dictionaries and 
+	# classify all these friends into layman, expert or celebrity.
+	for i in range(0, len(target_friends)):
+		All_friends.append({"Name": fnd_names[i], 
+			"Total Tweets": fnd_tweets[i], "Total Followers": fnd_flws[i]})
+		if All_friends[i]["Total Followers"] < 100:
+			layman.append({"Name": fnd_names[i], "Total Tweets": fnd_tweets[i]})
+		elif 100 <= All_friends[i]["Total Followers"] <= 1000:
+			expert.append({"Name": fnd_names[i], "Total Tweets": fnd_tweets[i]})
+		else:
+			celebrity.append({"Name": fnd_names[i], "Total Tweets": fnd_tweets[i]})
+	act_l = layman[max(xrange(len(layman)), 
+		key=lambda index: layman[index]["Total Tweets"])]
+	act_e = expert[max(xrange(len(expert)), 
+		key=lambda index: expert[index]["Total Tweets"])]
+	act_c = celebrity[max(xrange(len(celebrity)), 
+		key=lambda index: celebrity[index]["Total Tweets"])]
+	pop = All_friends[max(xrange(len(All_friends)), 
+		key=lambda index: All_friends[index]["Total Followers"])]
+	print "The most active layman is: %s \nHer or his total tweet number is: %s." %(act_l["Name"], act_l["Total Tweets"])
+	print "The most active expert is: %s \nHer or his total tweet number is: %s." %(act_e["Name"], act_e["Total Tweets"])
+	print "The most active celebrity is: %s \nHer or his total tweet number is: %s." %(act_c["Name"], act_c["Total Tweets"])
+	print "The most popular friend is: %s \nHer or his total follower number is: %s" %(pop["Name"], pop["Total Followers"])
 
-
-for friend in tweepy.Cursor(api.friends).items():
-    # Process the friend here
-    process_friend(friend)
-
-print target.screen_name
-print target.followers_count
-for friend in target.followers():
-   print friend.screen_name
-
-    # process status here
-    mytweets.append(status.text)
-
-
-
+# -------- Use the function to answer the question.
 # Q: Among the friends of your target, i.e. the users she is 
 	#following, who are the most active layman, expert and celebrity?
 # Q: Among the friends of your target who is the most popular?
+FriendInfo("PatrickRickert")
+# A:The most active layman is: haleybpritchard 
+#	Her or his total tweet number is: 1649.
+# 	The most active expert is: LucyRose193 
+#	Her or his total tweet number is: 18221.
+# 	The most active celebrity is: MaraWilson 
+# 	Her or his total tweet number is: 95297.
+# A:The most popular friend is: BarackObama 
+#	Her or his total follower number is: 93849053
+
 
 # -------- Two degrees of separation: -------- 
 # (For the following two questions, limit your search of 
@@ -86,7 +119,14 @@ for friend in target.followers():
 # Q: Among the friends of your target and their friends, who is the most active?
 
 
+flw_names = []
+for follower in tweepy.Cursor(target_followers, count = 200, include_entities = True).items():
+	flw_names.append(follower.screen_name)
 
+
+for friend in tweepy.Cursor(api.friends).items():
+    # Process the friend here
+    process_friend(friend)
 
 #What can I do using this object?
 dir(target)
