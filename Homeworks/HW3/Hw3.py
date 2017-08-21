@@ -2,8 +2,8 @@ import tweepy
 import time
 
 #Get access to API
-auth = tweepy.OAuthHandler('j5oIH3LirGPur9nBpZQes9ngR', '5VnauVyjGF9UmivmbXtX1oZs7sKgrJXrGfb5XY6lZrP2iPGVXJ')
-auth.set_access_token('897839762798784512-3FfgASJ573uTPWCkH1M3pWRAYYoBc57', 'tIAhxJxIHF3vbYpJ17rNwIvgkNyDUPDrXeAx4ScCftk8l')    
+auth = tweepy.OAuthHandler('', '')
+auth.set_access_token('', '')    
 api = tweepy.API(auth, wait_on_rate_limit = True, wait_on_rate_limit_notify = True)
 
 #See rate limit
@@ -153,4 +153,3 @@ def FollowerFollowerInfo(TargetName):
 
 # Q: Among the followers of your target and their followers, who is the most active?
 # Q: Among the friends of your target and their friends, who is the most active?
-
