@@ -28,8 +28,28 @@ print sum([len(ring[node]) for node in ring.keys()])/2
 
 # Grid Network
 # TODO: create a square graph with 256 nodes and count the edges 
-# TODO: define a function countEdges
+square = {}
+n = 256
+for i in range(0, n, 16):
+  for j in range(15):
+    square = makeLink(square, i+j, i+j+1)
+for i in range(16):
+  for j in range(0, n-16, 16):
+    square = makeLink(square, i+j, i+j+16)
+for i in range(0, n-16, 16):
+  for j in range(15):
+    square = makeLink(square, i+j, i+j+17)
+for i in range(0, n-16, 16):
+  for j in range(1, 16):
+    square = makeLink(square, i+j, i+j+15)
 
+# TODO: define a function countEdges
+def countEdges(Graph):
+  count = 0
+  for i in range(n):
+    count += len(Graph[i])
+  count /= 2
+  return count
 
 # Social Network
 class Actor(object):
@@ -63,6 +83,7 @@ makeLink(movies, ah, jr) # Valentine's Day
 
 
 # How many nodes in movies?
+countEdges(movies)
 # How many edges in movies?
 
 def tour(graph, nodes):
@@ -83,6 +104,7 @@ def tour(graph, nodes):
           break 
 
 # TODO: find an Eulerian tour of the movie network and check it 
+
 tour(movies, [ah,ms])
 tour(movies, [rd,ms,kb,jr,ah,ms])
 movie_tour = [] 
@@ -103,12 +125,35 @@ def findPath(graph, start, end, path=[]):
 
 print findPath(movies, jr, ms)
 
-
 # TODO: implement findShortestPath()
-# print findShortestPath(movies, ms, ss)
+def findShortestPath(graph, start, end):
+  allPaths = findAllPaths(graph, start, end, [], [])
+  length = []
+  for i in allPaths:
+    length.append(len(i))
+  shortest = []
+  for i in range(0, len(length)):
+    if length[i] == min(length):
+      shortest.append(allPaths[i])
+    else:
+      pass
+  return shortest
+
+print findShortestPath(movies, ms, ss)
 
 # TODO: implement findAllPaths() to find all paths between two nodes
-# allPaths = findAllPaths(movies, jr, ms)
+def findAllPaths(graph, start, end, path=[], paths=[]):
+        path = path + [start]
+        if start == end:
+            paths.append(path)
+        if not graph.has_key(start):
+            return None
+        for node in graph[start]:
+            if node not in path:
+                newpath = findAllPaths(graph, node, end, path, paths)
+        return paths
+
+allPaths = findAllPaths(movies, jr, ms)
 # for path in allPaths:
 #   print path
 
