@@ -8,17 +8,15 @@ def Great_com_div(num1, num2):
 
 #Exercise 2
 #Write a function that returns prime numbers less than 121
-def primes(threshold = 121):
-	list = []
-	for i in range(3, threshold+1):
-		for j in range(2, i):
-			if (i % j) == 0:
-				break
-			else:
-				prime = i
-		list.append(prime)
-	return "The prime numbers are: %s" %list
-
+def primes(num):
+    if num == 1: return None
+    i = 1
+    remainder = []
+    while i <= num:
+        remainder.append(num % i)
+        i += 1
+    if remainder.count(0) < 3: print num
+    return primes(num - 1)
 
 #Exercise 3
 #Write a function that gives a solution to Tower of Hanoi game
