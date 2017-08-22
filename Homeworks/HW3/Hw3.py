@@ -1,10 +1,10 @@
 import tweepy
 import time
+import imp
+import math
 
-#Get access to API
-auth = tweepy.OAuthHandler('', '')
-auth.set_access_token('', '')    
-api = tweepy.API(auth, wait_on_rate_limit = True, wait_on_rate_limit_notify = True)
+twitt = imp.load_source('Python', '../../../keys.py')
+api = twitt.api
 
 #See rate limit
 api.rate_limit_status()
@@ -141,15 +141,19 @@ def FollowerFollowerInfo(TargetName):
 					All_followers.append({"Name": new_flw_names[k], "Total Tweets": new_flw_tweets[k]})	
 			except tweepy.TweepError as e:
 				print e
-				time.sleep(65)
+				continue
 	except tweepy.TweepError as f:
 		print f
-		time.sleep(65)
-		# Find the most active person
-		act = All_followers[max(xrange(len(All_followers)), 
-			key=lambda index: All_followers[index]["Total Tweets"])]
-		print "The most active person is: %s \nHer or his total tweet number is: %s." %(act["Name"], act["Total Tweets"])
+	# Find the most active person
+	act = All_followers[max(xrange(len(All_followers)), 
+		key=lambda index: All_followers[index]["Total Tweets"])]
+	print "The most active person is: %s \nHer or his total tweet number is: %s." %(act["Name"], act["Total Tweets"])
 
-
+# -------- Use the function to answer the question.
 # Q: Among the followers of your target and their followers, who is the most active?
+FollowerFollowerInfo("elrossit1")
+# Rate limit reached. Sleeping for: 503
+#The most active person is: lizzie_erftmier 
+# Her or his total tweet number is: 33756.
+
 # Q: Among the friends of your target and their friends, who is the most active?

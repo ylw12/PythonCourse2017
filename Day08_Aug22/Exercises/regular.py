@@ -7,8 +7,8 @@ mytext2 = 'Hello world, Bonjour world!'
 re.split(r'\d',mytext)
 re.split(r'\d\.',mytext)
 
-re.findall(r'[a-z]',mytext)
-re.findall(r'[a-z]+',mytext) #space!
+re.findall(r'[a-z]',mytext) # find by letter
+re.findall(r'[a-z]+',mytext) #space! find by word
 
 #re.compile
 
