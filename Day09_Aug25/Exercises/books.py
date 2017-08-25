@@ -27,7 +27,7 @@ from sqlalchemy.orm import relationship, backref, sessionmaker
 print sqlalchemy.__version__
 
 #Connect to the local database, can use :memory: to just try it out in memory
-engine = sqlalchemy.create_engine('sqlite:////Users/michelletorres/Desktop/books.db', echo=True)
+engine = sqlalchemy.create_engine('sqlite:////Users/luweiying/Desktop/books.db', echo=True)
 
 Base = declarative_base() 
 
@@ -52,7 +52,7 @@ class Book(Base):
     	if self.author: return "<Book(%s by %s)>" % (self.name, self.author.name)
   	return "<Book(%s)>" %(self.name)
 
-  class Author(Base):
+class Author(Base):
     __tablename__ = 'authors'
   #   __table_args__ = {'extend_existing': True}
 
@@ -68,7 +68,7 @@ class Book(Base):
     def __repr__(self):
       return "<Author('%s')>" % (self.name)
 
-  class Country(Base):
+class Country(Base):
     __tablename__ = 'countries'
   #   __table_args__ = {'extend_existing': True}
     

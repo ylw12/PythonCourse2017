@@ -16,7 +16,7 @@ print sqlalchemy.__version__
 # interface to the database, adapted through a dialect that handles the details of the database 
 # and DBAPI in use. In this case the SQLite dialect will interpret instructions to the Python 
 # built-in sqlite3 module.
-engine = sqlalchemy.create_engine('sqlite:////Users/michelletorres/Desktop/players.db', echo=True)
+engine = sqlalchemy.create_engine('sqlite:////Users/luweiying/Desktop/players.db', echo=True)
 
 # When using the ORM, the configurational process starts by describing the database tables we’ll be
 # dealing with, and then by defining our own classes which will be mapped to those tables. 
